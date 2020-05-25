@@ -5,8 +5,9 @@ module stick(
 	output reg sdo,
 	output reg sclk,
 	output reg scs,
-	output wire [7:0] data_l,
-	output wire [7:0] data_r,
+	output wire [7:0] data_l_x,
+	output wire [7:0] data_r_x,
+	output wire [7:0] data_l_y,
 	output wire [6:0] display1,
 	output wire [6:0] display0,
 	output wire circle,
@@ -58,8 +59,9 @@ reg [7:0] din3;
 reg [7:0] din4;
 reg [7:0] din5;
 reg [7:0] din6;
-assign data_r = din3;
-assign data_l = din5;
+assign data_r_x = din3;
+assign data_l_x = din5;
+assign data_l_y = din6;
 assign circle = ~din2[5];
 assign square = ~din2[7];
 integer counter = 0;

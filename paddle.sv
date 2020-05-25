@@ -8,31 +8,25 @@ module paddle #(
 );
 
 integer counter;
-reg [7:0] sample;
 integer dx;
 always @(posedge clk or negedge rst) begin
 	if(!rst) begin
 		x_paddle <= 400;
 		counter <= 0;
-		sample <= 8'b10000000;
 	end
 	else begin
-		if(counter == 99997) begin
+		if(counter == 99998) begin
 			counter <= counter + 1;
-			sample <= control;
-		end
-		else if(counter == 99998) begin
-			counter <= counter + 1;
-			if(sample > 8'b10000000 && sample <= 8'b11000000) begin
+			if(control > 8'b10000000 && control <= 8'b11000000) begin
 				dx <= 1;
 			end
-			else if(sample > 8'b11000000) begin
+			else if(control > 8'b11000000) begin
 				dx <= 2;
 			end
-			else if(sample < 8'b10000000 && sample >= 8'b01000000) begin
+			else if(control < 8'b10000000 && control >= 8'b01000000) begin
 				dx <= -1;
 			end
-			else if(sample < 8'b01000000) begin
+			else if(control < 8'b01000000) begin
 				dx <= -2;
 			end
 			else

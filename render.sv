@@ -12,6 +12,8 @@ module render #(
 	input wire [10:0] x,
 	input wire [9:0] y,
 	input wire o_active,
+	input wire [2:0] state,
+	input wire [2:0] angle,
 	output reg [8:0] VGA
 );
 
@@ -32,16 +34,30 @@ module render #(
 	 wire [1:0] b;
 	 assign b = brick[brick_id];
 	 reg [8:0] ball_show;
+	 reg [8:0] ghost_show;
+	 //ghost是为了瞄准而显示的小球影子
+	 wire [10:0] x_ghost; 
+	 wire [9:0] y_ghost;
+	 assign x_ghost = (angle==1)? x_ball-20:x_ball+20;
+	 assign y_ghost = y_ball - 20;
+	 
 	 reg [8:0] paddle_l_show;
 	 reg [8:0] paddle_r_show;
 	 reg [8:0] brick_show; 
+	 
 	 always @(posedge clk) begin
-			VGA <= ball_show|brick_show|paddle_r_show;
+			if(state == 2) begin 
+				VGA <= ball_show|brick_show|paddle_r_show;
+			end
+			else if(state > 2) begin
+				VGA <= ball_show|brick_show|paddle_r_show;
+			end
 	 end
 	 
 	 always @(negedge clk) begin //在下降沿做计算
 	 	if(!rst) begin
 			ball_show <= 0;
+			ghost_show <= 0;
 			paddle_l_show <= 0;
 			paddle_r_show <= 0;
 			brick_show <= 0;
@@ -67,6 +83,19 @@ module render #(
 			end
 			else
 				ball_show <= 0;
+				
+			if(x>=x_ghost-radius && x<= x_ghost+radius && y>= y_ghost-radius && y<=y_ghost+radius) begin
+				if(x== x_ghost || y == y_ghost)
+					ghost_show <= 9'b010010010;
+				else if(x>=x_ghost-2 && x<= x_ghost+2 && y>=y_ghost-3 && y<=y_ghost+3)
+					ghost_show <= 9'b010010010;
+				else if(y>=y_ghost-2 && y<= y_ghost+2 && x>=x_ghost-3 && x<=x_ghost+3)
+					ghost_show <= 9'b010010010;
+				else
+					ghost_show <= 9'b000000000;
+			end
+			else
+				ghost_show <= 0;
 			if(x>=bx_start+5 && x < bx_start + 95 && y<400 && y>=by_start+5 && y < by_start+45 && b!=0) begin
 				case (b)
 					1: brick_show <= 9'b111111111;

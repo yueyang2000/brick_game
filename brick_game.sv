@@ -40,39 +40,64 @@ module brick_game(
         .o_x(x_pixel), 
         .o_y(y_pixel)
     );
+	 wire [2:0] state;
+	 wire [19:0] period;
+	 wire [2:0] level;
+	 wire dead, win;
+	 state_manager sm(
+		.clk(CLK_40M),
+		.rst(M_nRESET),
+		.state(state),
+		.circle(circle),
+		.period(period),
+		.level(level),
+		.dead(dead),
+		.win(win)
+	 );
 	 
 	 parameter radius = 4;
 	 parameter paddle_length = 80;
 	 wire circle;
-	 wire [7:0] data_l;
-	 wire [7:0] data_r;
+	 //左摇杆选角度，右摇杆移动
+	 wire [7:0] data_l_x;
+	 wire [7:0] data_r_x;
+	 wire [7:0] data_l_y;
 	 wire [10:0] x_paddle_l;
 	 wire [10:0] x_paddle_r;
 	 wire [10:0] x_ball;
 	 wire [9:0] y_ball;
 	 wire [1:0] brick [63:0];
-	 stick s(
+	 wire [2:0] angle;//共六种角度
+	 ps2_stick s(
 		.CLK_40M(CLK_40M),
 		.rst(M_nRESET),
 		.di(ps2_di),
 		.sdo(ps2_do),
 		.sclk(ps2_sclk),
 		.scs(ps2_scs),
-		.data_r(data_r),
-		.data_l(data_l),
+		.data_r_x(data_r_x),
+		.data_l_y(data_l_y),
+		.data_l_x(data_l_x),
 		.circle(circle)
 	 );
 	 paddle #(.length(paddle_length))pr(
 		.clk(CLK_40M),
 		.rst(M_nRESET),
-		.control(data_r),
+		.control(data_r_x),
 		.x_paddle(x_paddle_r)
 	 );
 	 paddle #(.length(paddle_length))pl(
 		.clk(CLK_40M),
 		.rst(M_nRESET),
-		.control(data_l),
+		.control(data_l_x),
 		.x_paddle(x_paddle_l)
+	 );
+	 angle_controller ac(
+		.clk(CLK_40M),
+		.rst(M_nRESET),
+		.x(data_l_x),
+		.y(data_l_y),
+		.angle(angle)
 	 );
 	 /*
 	 pingpong #(.radius(radius)) b(
@@ -87,11 +112,16 @@ module brick_game(
 	 game_ball #(.radius(radius),.paddle_length(paddle_length)) gb(
 		.clk(CLK_40M),
 		.rst(M_nRESET),
-		.start(circle),
 		.x_paddle(x_paddle_r),
 		.brick(brick),
 		.x(x_ball),
-		.y(y_ball)
+		.y(y_ball),
+		.period(period),
+		.state(state),
+		.angle(angle),
+		.level(level),
+		.dead(dead),
+		.win(win)
 	 );
 		
 	 render #(.paddle_length(paddle_length),.radius(radius))r(
@@ -105,8 +135,10 @@ module brick_game(
 		.x(x_pixel),
 		.y(y_pixel),
 		.o_active(o_active),
+		.angle(angle),
+		.state(state),
 		.VGA(VGA)
 	 );
-	digital_7 d1(display1,data_r[7:4]);
-	digital_7 d2(display0,data_r[3:0]);
+	digital_7 d1(display1,data_r_x[7:4]);
+	digital_7 d2(display0,data_r_x[3:0]);
 endmodule
