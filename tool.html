@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<head>
+    <style>
+        .block {
+            display: inline-block;
+            height: 4vw;
+            width: 8vw;
+            background: white;
+            margin: 1vw;
+            text-align: center;
+            line-height: 4vw;
+            -webkit-user-select: none;
+        }
+    </style>
+    <div id="brick">
+        <div class="row" v-for="i in 8">
+            <div class="block" v-for="j in 8" @click="update(i, j)"
+                :style="{background: color[brick[(i - 1) * 8 + (j - 1)]]}">
+                {{brick[(i - 1) * 8 + (j - 1)]}}
+            </div>
+        </div>
+        <div class="text">
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;brick_cnt &#59;= {{sum}}</p>
+            <p v-for="i in 64">
+                &nbsp;&nbsp;&nbsp;&nbsp;brick[{{i - 1}}] <= {{brick[i - 1]}}&#59; </p>
+        </div>
+    </div>
+</head>
+
+<body>
+    <script src="vue.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#brick',
+            data: {
+                brick: new Array(64).fill(0),
+                color: ['#ffffff', '#bbbbbb', '#888888', '#666666'],
+                sum: 0
+            },
+            methods: {
+                update: function (i, j) {
+                    let l = (i - 1) * 8 + (j - 1);
+                    this.brick[l] = (this.brick[l] + 1) % 4;
+                    this.sum = eval(this.brick.join('+'));
+                    this.$forceUpdate();
+                }
+            }
+        })
+    </script>
+</body>
