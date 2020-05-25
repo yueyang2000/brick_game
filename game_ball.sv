@@ -10,7 +10,8 @@ module game_ball #(
 	input wire [10:0] x_paddle,
 	output reg [1:0] brick [63:0],
 	output reg [10:0] x,
-	output reg [9:0] y
+	output reg [9:0] y,
+	output reg [6:0] score
 );
 reg [31:0] period;
 reg now;
@@ -53,6 +54,7 @@ always @(posedge clk) begin
 		boundary <= 0;
 		target_en <= 0;
 		state <= 0;
+		score <= 0;
 		now <= fast;
 		if (fast) begin
 			period <= 50000;
@@ -276,12 +278,18 @@ always @(posedge clk) begin
 					end
 				end
 				else if(counter == period - 4) begin
-					if(target1<64 && target_en[0] && b1!=0)
+					if(target1<64 && target_en[0] && b1!=0) begin
 						brick[target1[5:0]] <= b1 - 1;
-					if(target2<64 && target_en[1] && b2!=0)
+						score <= score + 1;
+					end
+					if(target2<64 && target_en[1] && b2!=0) begin
 						brick[target2[5:0]] <= b2 - 1;
-					if(target3<64 && target_en[2] && b3!=0)
+						score <= score + 1;
+					end
+					if(target3<64 && target_en[2] && b3!=0) begin
 						brick[target3[5:0]] <= b3 - 1;
+						score <= score + 1;
+					end
 				end
 			end
 		end
