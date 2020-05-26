@@ -48,6 +48,7 @@ module brick_game(
 		.clk(CLK_40M),
 		.rst(M_nRESET),
 		.state(state),
+		.angle(angle),
 		.circle(circle),
 		.period(period),
 		.level(level),

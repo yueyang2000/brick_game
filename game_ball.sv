@@ -121,13 +121,26 @@ always @(posedge clk or negedge rst) begin
 		target_en <= 0;
 		//根据角度选择速度方向
 		case (angle)
-			1: begin
-				dx <= -1;
-				dy <= -1;
+			0: begin
+				dx <= -2; dy <= -1;
+			end
+			1:begin
+				dx <= -1;dy <= -1;
+			end
+			2:begin
+				dx <= -1; dy <= -2;
+			end
+			3: begin
+				dx <= 1; dy <= -2;
+			end
+			4: begin
+				dx <= 1; dy <= -1;
+			end
+			5: begin
+				dx <= 2; dy <= -1;
 			end
 			default: begin
-				dx <= 1;
-				dy <= -1;
+				dx <= 1; dy <= -1;
 			end
 		endcase
 	end

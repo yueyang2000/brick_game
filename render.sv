@@ -29,32 +29,17 @@ module render #(
 		.x_start(bx_start),
 		.y_start(by_start)
 	 );
-	 wire [5:0] brick_id;
-	 assign brick_id = (by<<3) + bx;
-	 wire [1:0] b;
-	 assign b = brick[brick_id];
 	 reg [8:0] ball_show;
 	 reg [8:0] ghost_show;
 	 //ghost是为了瞄准而显示的小球影子
-	 wire [10:0] x_ghost; 
-	 wire [9:0] y_ghost;
-	 assign x_ghost = (angle==1)? x_ball-20:x_ball+20;
-	 assign y_ghost = y_ball - 20;
+	 reg [10:0] x_ghost; 
+	 reg [9:0] y_ghost;
 	 
 	 reg [8:0] paddle_l_show;
 	 reg [8:0] paddle_r_show;
 	 reg [8:0] brick_show; 
 	 
-	 always @(posedge clk) begin
-			if(state == 2) begin 
-				VGA <= ball_show|brick_show|paddle_r_show;
-			end
-			else if(state > 2) begin
-				VGA <= ball_show|brick_show|paddle_r_show;
-			end
-	 end
-	 
-	 always @(negedge clk) begin //在下降沿做计算
+	 always @(posedge clk) begin //在下降沿做计算
 	 	if(!rst) begin
 			ball_show <= 0;
 			ghost_show <= 0;
@@ -84,6 +69,37 @@ module render #(
 			else
 				ball_show <= 0;
 				
+			case (angle)
+				0: begin
+					x_ghost <= x_ball - 51;
+					y_ghost <= y_ball - 25;
+				end
+				1: begin
+					x_ghost <= x_ball - 40;
+					y_ghost <= y_ball - 40;
+				end
+				2: begin
+					x_ghost <= x_ball - 25;
+					y_ghost <= y_ball - 51;
+				end
+				3: begin
+					x_ghost <= x_ball + 25;
+					y_ghost <= y_ball - 51;
+				end
+				4: begin
+					x_ghost <= x_ball + 40;
+					y_ghost <= y_ball - 40;
+				end
+				5: begin
+					x_ghost <= x_ball + 51;
+					y_ghost <= y_ball - 25;
+				end
+				default: begin
+					x_ghost <= x_ball + 40;
+					y_ghost <= y_ball - 40;
+				end
+			endcase
+				
 			if(x>=x_ghost-radius && x<= x_ghost+radius && y>= y_ghost-radius && y<=y_ghost+radius) begin
 				if(x== x_ghost || y == y_ghost)
 					ghost_show <= 9'b010010010;
@@ -96,7 +112,7 @@ module render #(
 			end
 			else
 				ghost_show <= 0;
-			if(x>=bx_start+5 && x < bx_start + 95 && y<400 && y>=by_start+5 && y < by_start+45 && b!=0) begin
+			if(x>=bx_start+5 && x < bx_start + 95 && y<400 && y>=by_start+5 && y < by_start+45 && brick[(by<<3) + bx]!=0) begin
 				case (b)
 					1: brick_show <= 9'b111111111;
 					2: brick_show <= 9'b111000000;
@@ -112,6 +128,12 @@ module render #(
 			paddle_l_show <= 0;
 			paddle_r_show <= 0;
 			brick_show <= 0;
+		end
+		if(state == 2) begin 
+			VGA <= ball_show|brick_show|paddle_r_show|ghost_show;
+		end
+		else if(state > 2) begin
+			VGA <= ball_show|brick_show|paddle_r_show;
 		end
 	end
 endmodule
