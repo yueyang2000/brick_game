@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="text">
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;brick_cnt &#59;= {{sum}}</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;brick_cnt <= {{sum}}</p>
             <p v-for="i in 64">
                 &nbsp;&nbsp;&nbsp;&nbsp;brick[{{i - 1}}] <= {{brick[i - 1]}}&#59; </p>
         </div>
@@ -29,7 +29,7 @@
 </head>
 
 <body>
-    <script src="vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>
         var app = new Vue({
             el: '#brick',

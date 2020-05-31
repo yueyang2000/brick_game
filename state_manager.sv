@@ -2,23 +2,29 @@ module state_manager(
 	input wire clk,
 	input wire rst,
 	input wire circle,
+	input wire square,
 	input wire dead,
 	input wire win,
 	input wire [2:0] angle,
 	output reg [2:0] state,
+	output reg [2:0] life,
 	output reg [19:0] period,
 	output reg [2:0] level
 );
-
+reg [19:0] base_period;
 always @(posedge clk or negedge rst) begin
 	if(!rst) begin
 		state <= 0;
 		level <= 0;
+		life <= 0;
+		base_period <= 120000;
 	end
 	else begin
 		case (state)
 			0: begin //game_ball加载局面level 
 				state <= 1;
+				life <= 5;
+				base_period <= 120000;
 			end
 			1: begin
 				state <= 2;
@@ -27,9 +33,9 @@ always @(posedge clk or negedge rst) begin
 				//等待开始，用户选择位置和方向
 				//按钮按下球启动，速度控制period给定
 				if(angle == 1 || angle == 4)	
-					period <= 100000;
+					period <= base_period;
 				else
-					period <= 130000; //注意这里球的整体速度是变快了的，否则难度会降低 150000
+					period <= base_period + (base_period>>1); //注意这里球的整体速度是变快了的，否则难度会降低 150000
 				if(circle) begin
 					state <= 3;
 				end
@@ -38,10 +44,28 @@ always @(posedge clk or negedge rst) begin
 				//球自由飞行，等待球死亡或砖块打完
 				if(win) begin
 					state <= 1;
-					level <= level + 1;
+					if(life < 5)
+						life <= life + 1;
+					if(level == 4) begin
+						level <= 0;
+						base_period <= base_period - (base_period >> 2); //速度变为4/3
+					end
+					else
+						level <= level + 1;
 				end
 				else if(dead) begin
-					state <= 2;
+					if(life > 0) begin
+						state <= 2;
+						life <= life - 1;
+					end
+					else
+						state <= 4;
+				end
+			end
+			4: begin//game over
+				if(square) begin
+					state <= 0; // new game
+					level <= 0;
 				end
 			end
 		endcase

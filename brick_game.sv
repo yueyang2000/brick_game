@@ -52,26 +52,26 @@ module brick_game(
 		.state(state),
 		.angle(angle),
 		.circle(circle),
+		.square(square),
 		.period(period),
 		.level(level),
 		.dead(dead),
-		.win(win)
+		.win(win),
+		.life(life)
 	 );
 	 
 	 parameter radius = 4;
 	 parameter paddle_length = 80;
-	 wire circle;
+	 wire circle, square;
 	 //左摇杆选角度，右摇杆移动
-	 wire [7:0] data_l_x;
-	 wire [7:0] data_r_x;
-	 wire [7:0] data_l_y;
-	 wire [10:0] x_paddle_l;
-	 wire [10:0] x_paddle_r;
+	 wire [7:0] data_l_x, data_r_x, data_l_y;
+	 wire [10:0] x_paddle_l, x_paddle_r;
 	 wire [10:0] x_ball;
 	 wire [9:0] y_ball;
 	 wire [1:0] brick [63:0];
 	 wire [2:0] angle;//共六种角度
 	 wire [13:0] score;
+	 wire [2:0] life;
 	 wire [3:0] n3, n2, n1, n0;
 	 
 	 ps2_stick s(
@@ -84,7 +84,8 @@ module brick_game(
 		.data_r_x(data_r_x),
 		.data_l_y(data_l_y),
 		.data_l_x(data_l_x),
-		.circle(circle)
+		.circle(circle),
+		.square(square)
 	 );
 	 paddle #(.length(paddle_length))pr(
 		.clk(CLK_40M),
@@ -152,6 +153,7 @@ module brick_game(
 		.o_active(o_active),
 		.angle(angle),
 		.state(state),
+		.life(life),
 		.VGA(VGA)
 	 );
 	digital_7 d3(display3, n3);
