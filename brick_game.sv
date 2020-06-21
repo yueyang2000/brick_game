@@ -31,21 +31,21 @@ module brick_game(
 	 wire [9:0] y_pixel;
 	 wire [8:0] VGA;
 	 assign {VGA_R, VGA_G, VGA_B} = VGA;
-	 
-	 
+
+
     vga800x600 display (
         .i_clk(CLK_40M),
         .i_rst(M_nRESET),
-        .o_hs(VGA_HSYNC), 
+        .o_hs(VGA_HSYNC),
         .o_vs(VGA_VSYNC),
 		  .o_active(o_active),
-        .o_x(x_pixel), 
+        .o_x(x_pixel),
         .o_y(y_pixel)
     );
-	 wire [2:0] state;
-	 wire [19:0] period;
-	 wire [2:0] level;
-	 wire dead, win;
+	 wire [2:0] state; //状态编号
+	 wire [19:0] period; //小球运动周期
+	 wire [2:0] level; //关卡编号
+	 wire dead, win; //死亡、获胜信号
 	 state_manager sm(
 		.clk(CLK_40M),
 		.rst(M_nRESET),
@@ -59,21 +59,21 @@ module brick_game(
 		.win(win),
 		.life(life)
 	 );
-	 
-	 parameter radius = 4;
-	 parameter paddle_length = 80;
+
+	 parameter radius = 4; //小球半径
+	 parameter paddle_length = 80; //挡板长度
 	 wire circle, square;
 	 //左摇杆选角度，右摇杆移动
-	 wire [7:0] data_l_x, data_r_x, data_l_y;
-	 wire [10:0] x_paddle_l, x_paddle_r;
-	 wire [10:0] x_ball;
-	 wire [9:0] y_ball;
-	 wire [1:0] brick [63:0];
-	 wire [2:0] angle;//共六种角度
-	 wire [13:0] score;
-	 wire [2:0] life;
-	 wire [3:0] n3, n2, n1, n0;
-	 
+	 wire [7:0] data_l_x, data_r_x, data_l_y; //摇杆位置信息
+	 wire [10:0] x_paddle_l, x_paddle_r; //挡板位置
+	 wire [10:0] x_ball; //小球x坐标
+	 wire [9:0] y_ball;	//小球y坐标
+	 wire [1:0] brick [63:0]; //局面信息
+	 wire [2:0] angle;//角度编号，共6种
+	 wire [13:0] score; //得分
+	 wire [2:0] life; //剩余生命
+	 wire [3:0] n3, n2, n1, n0; //四位十进制得分
+
 	 ps2_stick s(
 		.CLK_40M(CLK_40M),
 		.rst(M_nRESET),
