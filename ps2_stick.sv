@@ -204,7 +204,7 @@ always @(posedge CLK_40M) begin
 		else
 			cnt_6us <= cnt_6us + 1;
 			
-		if(cnt_1020us == 40) begin
+		if(cnt_1020us == 40799) begin
 			cnt_1020us <=0;
 			cnt_trig <= cnt_trig + 1;
 			if(cnt_trig == 1)
