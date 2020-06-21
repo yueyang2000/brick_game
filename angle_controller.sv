@@ -1,9 +1,13 @@
+// angle_controller.sv
+//
+// given x & y, output startup angle
+
 module angle_controller(
-	input wire clk,
-	input wire rst,
-	input wire [7:0] x,
-	input wire [7:0] y,
-	output reg [2:0] angle
+	input wire clk,            // clock
+	input wire rst,            // reset
+	input wire [7:0] x,        // x signal
+	input wire [7:0] y,        // y signal
+	output reg [2:0] angle     // angle selected
 );
 
 //angles: (-2,-1),(-1,-1),(-1,-2),(1,-2)(1,-1)(1,-2)

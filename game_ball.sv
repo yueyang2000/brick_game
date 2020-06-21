@@ -1,43 +1,47 @@
+// game_ball.sv
+//
+// logic processor of game ball moving and hitting
+
 module game_ball #(
 	parameter radius = 4,
 	parameter paddle_length = 60
 	)(
-	input wire clk,
-	input wire rst,
-	input wire [10:0] x_paddle,
-	input wire [2:0] state,
-	input wire [2:0] angle,
-	input wire [19:0] period,
-	input wire [2:0] level,
-	output reg [1:0] brick [63:0],
-	output reg [10:0] x,
-	output reg [9:0] y,
-	output reg dead,
-	output reg win,
-	output reg [13:0] score
+	input wire clk,                 // clock
+	input wire rst,                 // reset
+	input wire [10:0] x_paddle,     // x paddle position
+	input wire [2:0] state,         // game state
+	input wire [2:0] angle,         // y paddle angle
+	input wire [19:0] period,       // game speed
+	input wire [2:0] level,         // game level
+	output reg [1:0] brick [63:0],  // brick life
+	output reg [10:0] x,            // ball x position
+	output reg [9:0] y,             // ball y position
+	output reg dead,                // is dead
+	output reg win,                 // is win
+	output reg [13:0] score         // user score
 );
-reg [3:0] bx;
-reg [3:0] by;
-wire [3:0] bx_result;
-wire [3:0] by_result;
-integer dx, dy;
-integer counter;
-reg [10:0] next_x;
-reg [9:0] next_y;
-reg [10:0] find_x;
-reg [10:0] find_y;
+reg [3:0] bx;                       // brick id x
+reg [3:0] by;                       // brick id y
+wire [3:0] bx_result;               // brick x result
+wire [3:0] by_result;               // brick y result
+integer dx, dy;                     // speed x y
+integer counter;                    // clock counter
+reg [10:0] next_x;                  // next position ball x
+reg [9:0] next_y;                   // next position ball y
+reg [10:0] find_x;                  // find brick id x
+reg [10:0] find_y;                  // find brick id y
 reg boundary; // 和边缘相撞，不需要检查与块碰撞
-reg [6:0] target1;
-reg [6:0] target2;
-reg [6:0] target3;
-reg [2:0] target_en;
-wire [1:0] b1;
-wire [1:0] b2;
-wire [1:0] b3;
+reg [6:0] target1;                  // possible target 1
+reg [6:0] target2;                  // possible target 2
+reg [6:0] target3;                  // possible target 3
+reg [2:0] target_en;                // target
+wire [1:0] b1;                      // brick id 1
+wire [1:0] b2;                      // brick id 2
+wire [1:0] b3;                      // brick id 3
 assign b1 = brick[target1[5:0]];
 assign b2 = brick[target2[5:0]];
 assign b3 = brick[target3[5:0]];
-reg [7:0] brick_cnt;
+reg [7:0] brick_cnt;                // existing brick counter
 brick_finder bf(
 	.x(find_x),
 	.y(find_y),

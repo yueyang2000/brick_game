@@ -1,9 +1,13 @@
+// brick_loader.sv
+//
+// load game from brick map & game status
+
 module brick_loader(
-	input wire clk,
-	input wire rst,
-	input wire [2:0] state,
-	input wire [2:0] level,
-	output reg [1:0] brick [63:0]
+	input wire clk,                  // clock
+	input wire rst,                  // reset
+	input wire [2:0] state,          // game state
+	input wire [2:0] level,          // game level
+	output reg [1:0] brick [63:0]    // brick life status
 );
 reg [7:0] brick_cnt;
 always @(posedge clk or negedge rst) begin

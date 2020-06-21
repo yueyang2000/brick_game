@@ -1,10 +1,14 @@
+// paddle.sv
+//
+// convert control signal to x paddle position
+
 module paddle #(
 	parameter length = 60
 	)(
-	input wire clk,
-	input wire rst,
-	input wire [7:0] control,
-	output reg [10:0] x_paddle
+	input wire clk,             // clock
+	input wire rst,             // reset
+	input wire [7:0] control,   // control signal
+	output reg [10:0] x_paddle  // x paddle position
 );
 
 integer counter;

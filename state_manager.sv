@@ -1,15 +1,19 @@
+// state_manager.sv
+//
+// control stating
+
 module state_manager(
-	input wire clk,
-	input wire rst,
-	input wire circle,
-	input wire square,
-	input wire dead,
-	input wire win,
-	input wire [2:0] angle,
-	output reg [2:0] state,
-	output reg [2:0] life,
-	output reg [19:0] period,
-	output reg [2:0] level
+	input wire clk,                 // clock
+	input wire rst,                 // reset
+	input wire circle,              // is circle clicked
+	input wire square,              // is square clicked
+	input wire dead,                // is dead
+	input wire win,                 // is win
+	input wire [2:0] angle,         // is angle
+	output reg [2:0] state,         // game state
+	output reg [2:0] life,          // game life
+	output reg [19:0] period,       // game speed (counter)
+	output reg [2:0] level          // game level
 );
 reg [19:0] base_period;
 always @(posedge clk or negedge rst) begin

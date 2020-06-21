@@ -1,11 +1,15 @@
+// score_to_digit.sv
+//
+// split score into four digits
+
 module score_to_digit(
-	input wire clk,
-	input wire rst,
-	input wire [13:0] score,
-	output reg [3:0] n3,
-	output reg [3:0] n2,
-	output reg [3:0] n1,
-	output reg [3:0] n0
+	input wire clk,             // clock
+	input wire rst,             // reset
+	input wire [13:0] score,    // score
+	output reg [3:0] n3,        // score digit 3
+	output reg [3:0] n2,        // score digit 2
+	output reg [3:0] n1,        // score digit 1
+	output reg [3:0] n0         // score digit 0
 );
 
 reg [13:0] prev_score;

@@ -1,11 +1,11 @@
 //接受x,y屏幕坐标返回50*100网格的区域位置bx,by
 module brick_finder(
-	input wire [10:0] x,
-	input wire [9:0] y,
-	output reg [3:0] bx,
-	output reg [3:0] by,
-	output reg [10:0] x_start,
-	output reg [9:0] y_start
+	input wire [10:0] x,           // x position
+	input wire [9:0] y,            // y position
+	output reg [3:0] bx,           // brick id x
+	output reg [3:0] by,           // brick id y
+	output reg [10:0] x_start,     // offset x
+	output reg [9:0] y_start       // offset y
 );
 
 always @(*) begin

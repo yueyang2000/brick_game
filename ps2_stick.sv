@@ -1,15 +1,19 @@
+// ps2_stick.sv
+//
+// communicate with ps2 stick
+
 module ps2_stick(
-	input wire CLK_40M,
-	input wire rst,
-	input wire di,
-	output reg sdo,
-	output reg sclk,
-	output reg scs,
-	output reg [7:0] data_l_x,
-	output reg [7:0] data_r_x,
-	output reg [7:0] data_l_y,
-	output reg circle,
-	output reg square
+	input wire CLK_40M,           // clock
+	input wire rst,               // reset
+	input wire di,                // data input
+	output reg sdo,               // send data output
+	output reg sclk,              // send data clock
+	output reg scs,               // send data control signal
+	output reg [7:0] data_l_x,    // data left x
+	output reg [7:0] data_r_x,    // data right x
+	output reg [7:0] data_l_y,    // data left y
+	output reg circle,            // is circle clicked
+	output reg square             // is square clicked
 );
 
 
@@ -200,7 +204,7 @@ always @(posedge CLK_40M) begin
 		else
 			cnt_6us <= cnt_6us + 1;
 			
-		if(cnt_1020us == 40799) begin
+		if(cnt_1020us == 40) begin
 			cnt_1020us <=0;
 			cnt_trig <= cnt_trig + 1;
 			if(cnt_trig == 1)

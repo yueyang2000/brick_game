@@ -4,10 +4,10 @@
 module brick_game(
     input wire CLK_100M,        // board clock: 100 MHz
     input wire M_nRESET,        // reset button
-	 input wire ps2_di,
-	 output wire ps2_do,
-	 output wire ps2_sclk,
-	 output wire ps2_scs,
+	 input wire ps2_di,         // ps2 stick data input
+	 output wire ps2_do,        // ps2 stick data output
+	 output wire ps2_sclk,      // ps2 stick clock
+	 output wire ps2_scs,       // ps2 stick control signal
     output wire VGA_HSYNC,      // horizontal sync output
     output wire VGA_VSYNC,      // vertical sync output
     output wire [2:0] VGA_R,    // 3-bit VGA red output
