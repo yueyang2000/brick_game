@@ -184,17 +184,17 @@ PS2手柄采用的是双向串行通信，主要用到的信号有如下几个�
 
 文件存储于 `waveform/stick.vwf` 与 `waveform/sim.vwf` 中
 
-![image-20200622001456455](C:\Users\Sulf1\AppData\Roaming\Typora\typora-user-images\image-20200622001456455.png)
+![image-20200622004718272](/Users/yueyang/Library/Application Support/typora-user-images/image-20200622004718272.png)
 
 可以看到，control signal，clock 和 data output 都在正常工作
 
-![image-20200622001534324](C:\Users\Sulf1\AppData\Roaming\Typora\typora-user-images\image-20200622001534324.png)
+![image-20200622004814289](/Users/yueyang/Library/Application Support/typora-user-images/image-20200622004814289.png)
 
 可以看到，模块在与 ps2 stick 以固定频率进行交互
 
-因为 modelsim 对 system verilog 支持并不好，在增加砖块生命值设定后无法进行相关仿真
+因为 modelsim 对 system verilog 支持并不好，在增加砖块生命值设定后无法进行相关仿真，实验中通过实物验证进行调试。
 
-通过实物验证进行调试
+
 
 ## 实验分工
 
