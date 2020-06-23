@@ -1,6 +1,6 @@
 # 摇杆操纵打砖块
 
-乐阳	刘一芃
+乐阳 2018011359		刘一芃 2018010138
 
 ## 实验介绍
 
@@ -18,13 +18,15 @@
 
 上述内容也是游戏的操作说明。详细的演示说明以及效果视频见展示PPT。
 
-<img src="/Users/yueyang/Library/Application Support/typora-user-images/image-20200621193535756.png" width="50%">
+<img src="img/demo.png" width="50%">
 
 
 
 ## 实验原理
 
 程序的全部模块及其功能如下：
+
+<img src="img/branch.png" width="50%">
 
 ```
 brick_game.sv			顶层模块
@@ -50,7 +52,7 @@ angle_controller.sv		手柄方向处理
 
 状态机主要由五个状态组成，状态图如下：
 
-<img src="/Users/yueyang/Library/Application Support/typora-user-images/image-20200621193840470.png" width="50%">
+<img src="img/state.png" width="50%">
 
 下面阐述各个状态之间的关联：
 
@@ -184,11 +186,11 @@ PS2手柄采用的是双向串行通信，主要用到的信号有如下几个�
 
 文件存储于 `waveform/stick.vwf` 与 `waveform/sim.vwf` 中
 
-![image-20200622004718272](/Users/yueyang/Library/Application Support/typora-user-images/image-20200622004718272.png)
+![image-20200622004718272](img/wave1.png)
 
 可以看到，control signal，clock 和 data output 都在正常工作
 
-![image-20200622004814289](/Users/yueyang/Library/Application Support/typora-user-images/image-20200622004814289.png)
+![image-20200622004814289](img/wave2.png)
 
 可以看到，模块在与 ps2 stick 以固定频率进行交互
 
