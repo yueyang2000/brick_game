@@ -14,3 +14,4 @@ A simple brick-destroy game implemented on FPGA.
 
 `tool/`: a tool designed to generate code for brick patterns
 
+<img src="doc/img/demo.png" width="50%">
